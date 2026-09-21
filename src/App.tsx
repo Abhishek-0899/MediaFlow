@@ -10,7 +10,7 @@ import { MediaGallery } from './components/media/MediaGallery'
 import { MediaGroups } from './components/media/MediaGroups'
 import { folderPatterns, initialMedia } from './data/mockMedia'
 import type { MediaItem, MediaType } from './types/media'
-import { buildFolderName, formatBytes, getFileTypeFromName, groupMediaByDate } from './utils/media'
+import { buildFolderName, formatBytes, getDuplicateIds, getFileTypeFromName, groupMediaByDate } from './utils/media'
 
 function App() {
   const [items, setItems] = useState<MediaItem[]>(initialMedia)
@@ -26,22 +26,7 @@ function App() {
   const [isExporting, setIsExporting] = useState(false)
   const [activeId, setActiveId] = useState<number>(1)
 
-  const duplicateIdSet = useMemo(() => {
-    const seen = new Map<string, number>()
-    const duplicates = new Set<number>()
-
-    items.forEach((item) => {
-      const key = `${item.type}:${item.name.replace(/\.[^/.]+$/, '')}:${item.fileSizeBytes}`
-      if (seen.has(key)) {
-        duplicates.add(seen.get(key)!)
-        duplicates.add(item.id)
-      } else {
-        seen.set(key, item.id)
-      }
-    })
-
-    return duplicates
-  }, [items])
+  const duplicateIdSet = useMemo(() => getDuplicateIds(items), [items])
 
   const visibleItems = useMemo(() => {
     return items.filter((item) => {

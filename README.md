@@ -38,6 +38,22 @@ npm run dev
 npm run build
 ```
 
+## Testing
+
+Run the unit tests once:
+
+```bash
+npm test
+```
+
+Run Vitest in watch mode while developing:
+
+```bash
+npm run test:watch
+```
+
+The suite covers byte formatting, folder naming, media type detection, display-date fallbacks, duplicate detection, date grouping, gallery interactions, detail rendering, grouped-media states, bulk controls, shared components, search filtering, and deletion workflows. Browser-only behavior such as the native file picker and ZIP download should be covered with an end-to-end browser runner when those workflows become part of CI.
+
 ## How It Works
 
 1. User selects photos or videos from the browser.

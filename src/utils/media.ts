@@ -60,13 +60,32 @@ export const getFileTypeFromName = (name: string): MediaType => {
   return 'document'
 }
 
+export const getDuplicateIds = (items: MediaItem[]) => {
+  const seen = new Map<string, number>()
+  const duplicates = new Set<number>()
+
+  items.forEach((item) => {
+    const key = `${item.type}:${item.name.replace(/\.[^/.]+$/, '')}:${item.fileSizeBytes}`
+    const existingId = seen.get(key)
+
+    if (existingId !== undefined) {
+      duplicates.add(existingId)
+      duplicates.add(item.id)
+    } else {
+      seen.set(key, item.id)
+    }
+  })
+
+  return duplicates
+}
+
 export const getDisplayDate = (value: string | undefined) => {
   if (!value) return 'Date unavailable'
 
   const parsed = new Date(`${value}T00:00:00`)
   if (Number.isNaN(parsed.getTime())) return 'Date unavailable'
 
-  return parsed.toLocaleDateString(undefined, {
+  return parsed.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
