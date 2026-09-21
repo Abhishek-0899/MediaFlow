@@ -16,4 +16,23 @@ export interface MediaItem {
   tags: string[]
   duplicate: boolean
   previewUrl?: string
+  metadataSource?: 'file' | 'fallback'
+}
+
+export interface MediaGroup {
+  id: string
+  label: string
+  items: MediaItem[]
+  photos: number
+  videos: number
+}
+
+export interface ProcessingError {
+  fileName: string
+  message: string
+}
+
+export interface ProcessingResult {
+  items: MediaItem[]
+  errors: ProcessingError[]
 }

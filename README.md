@@ -1,77 +1,61 @@
-# React + TypeScript + Vite
+# MediaFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MediaFlow is a browser-based media organizer for photos and videos. It helps users select files, review metadata, group them by date, detect duplicates, and export an organized ZIP structure while keeping the workflow primarily client-side.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Multi-file photo and video selection
+- Metadata review and extraction for file type, size, date, time, dimensions, and duration
+- Duplicate detection and cleanup
+- Bulk metadata editing
+- Date-based grouping and folder organization
+- Approval-style review before export
+- Structured ZIP export with JSZip
+- Client-side processing with privacy-first behavior
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- JSZip
 
-Note: This will impact Vite dev & build performances.
+## Architecture
 
-## Expanding the ESLint configuration
+The project keeps the UI layer separate from the media-processing logic. Core date parsing, file-type detection, and grouping are centralized in utility functions so the app remains maintainable as more media features are added.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Production Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run build
 ```
+
+## How It Works
+
+1. User selects photos or videos from the browser.
+2. Files are validated and assigned a media type.
+3. Creation date and basic metadata are derived from the file and fallback values.
+4. Media is grouped by date for review.
+5. User can bulk edit metadata, remove duplicates, or delete selected items.
+6. Organized media is exported as a ZIP archive.
+
+## Privacy
+
+Files remain in the browser during processing and are never uploaded to a remote server unless a user intentionally adds that functionality. Object URLs are cleaned up when no longer needed.
+
+## Future Improvements
+
+- real EXIF parsing for photos
+- stronger duplicate detection with content hashing
+- drag-and-drop upload area
+- local persistence via IndexedDB
+- improved preview cards and file-status badges
+- real cloud sync integration

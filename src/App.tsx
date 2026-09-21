@@ -7,9 +7,10 @@ import { StatCard } from './components/common/StatCard'
 import { MediaControls } from './components/media/MediaControls'
 import { MediaDetails } from './components/media/MediaDetails'
 import { MediaGallery } from './components/media/MediaGallery'
+import { MediaGroups } from './components/media/MediaGroups'
 import { folderPatterns, initialMedia } from './data/mockMedia'
 import type { MediaItem, MediaType } from './types/media'
-import { buildFolderName, formatBytes, getFileTypeFromName } from './utils/media'
+import { buildFolderName, formatBytes, getFileTypeFromName, groupMediaByDate } from './utils/media'
 
 function App() {
   const [items, setItems] = useState<MediaItem[]>(initialMedia)
@@ -51,6 +52,7 @@ function App() {
   }, [items, filterType, search])
 
   const activeItem = items.find((item) => item.id === activeId) ?? visibleItems[0] ?? items[0]
+  const mediaGroups = useMemo(() => groupMediaByDate(items), [items])
 
   const totalSize = items.reduce((sum, item) => sum + item.fileSizeBytes, 0)
   const totalStorageBytes = 8 * 1024 * 1024 * 1024 * 1024
@@ -269,6 +271,8 @@ function App() {
           />
           <MediaDetails activeItem={activeItem} />
         </section>
+
+        <MediaGroups groups={mediaGroups} />
 
         <MediaControls
           bulkLocation={bulkLocation}
